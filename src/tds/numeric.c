@@ -62,7 +62,6 @@ TDS_COMPILE_CHECK(maxprecision,
  * money is a special case of numeric really...that why its here
  */
 char *
-char *
 tds_money_to_string(const TDS_MONEY *money, char *s, bool use_2_digits)
 {
     TDS_INT8 mymoney;
