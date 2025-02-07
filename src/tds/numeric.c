@@ -62,33 +62,46 @@ TDS_COMPILE_CHECK(maxprecision,
  * money is a special case of numeric really...that why its here
  */
 char *
-tds_money_to_string(const TDS_MONEY * money, char *s, bool use_2_digits)
+char *
+tds_money_to_string(const TDS_MONEY *money, char *s, bool use_2_digits)
 {
-	TDS_INT8 mymoney;
-	TDS_UINT8 n;
-	char *p;
+    TDS_INT8 mymoney;
+    TDS_UINT8 n;
+    char *p;
 
-	setlocale(LC_NUMERIC, "C");
+    /* Force the numeric locale to "C" to help avoid locale-based formatting */
+    setlocale(LC_NUMERIC, "C");
 
-	/* sometimes money it's only 4-byte aligned so always compute 64-bit */
-	mymoney = (((TDS_INT8) money->tdsoldmoney.mnyhigh) << 32) | money->tdsoldmoney.mnylow;
+    /* Combine the 32-bit high and low parts to form a 64-bit money value */
+    mymoney = (((TDS_INT8) money->tdsoldmoney.mnyhigh) << 32) | money->tdsoldmoney.mnylow;
 
-	p = s;
-	if (mymoney < 0) {
-		*p++ = '-';
-		/* we use unsigned cause this cause arithmetic problem for -2^63*/
-		n = -mymoney;
-	} else {
-		n = mymoney;
-	}
-	/* if machine is 64 bit you do not need to split n */
-	if (use_2_digits) {
-		n = (n+ 50) / 100;
-		sprintf(p, "%" PRIu64 ".%02u", n / 100u, (unsigned) (n % 100u));
-	} else {
-		sprintf(p, "%" PRIu64 ".%04u", n / 10000u, (unsigned) (n % 10000u));
-	}
-	return s;
+    p = s;
+    if (mymoney < 0) {
+        *p++ = '-';
+        n = -mymoney;
+    } else {
+        n = mymoney;
+    }
+    if (use_2_digits) {
+        n = (n + 50) / 100;
+        sprintf(p, "%" PRIu64 ".%02u", n / 100u, (unsigned)(n % 100u));
+    } else {
+        sprintf(p, "%" PRIu64 ".%04u", n / 10000u, (unsigned)(n % 10000u));
+    }
+    
+    /* Remove any commas that may have been inserted */
+    {
+        char *src = s, *dst = s;
+        while (*src) {
+            if (*src != ',') {
+                *dst++ = *src;
+            }
+            src++;
+        }
+        *dst = '\0';
+    }
+    
+    return s;
 }
 
 /**
