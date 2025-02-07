@@ -268,29 +268,30 @@ data_generic_set_type_info(TDSCOLUMN * col, struct _drecord *drec, SQLINTEGER od
 		SET_INFO2("float", "", "", odbc_ver == SQL_OV_ODBC3 ? 53 : 15);
 
 	case SYBMONEY:
-		/* TODO check money format returned by propretary ODBC, scale == 4 but we use 2 digits */
-		drec->sql_desc_concise_type = SQL_DECIMAL;
-		drec->sql_desc_octet_length = 21;
-		drec->sql_desc_display_size = 21;
-		drec->sql_desc_precision = 19;
-		drec->sql_desc_scale     = 4;
-		drec->sql_desc_type_name   = "money";
-		drec->sql_desc_literal_prefix = NULL;
-	    	drec->sql_desc_literal_suffix = NULL;
-		/*SET_INFO2("money", "", "", 19);*/
-		SET_INFO2("decimal", "", "", 21);
-
+	    drec->sql_desc_concise_type = SQL_DECIMAL;
+	    drec->sql_desc_octet_length = 21;
+	    drec->sql_desc_display_size = 21;
+	    drec->sql_desc_precision   = 19;
+	    drec->sql_desc_scale       = 4;
+	    drec->sql_desc_type_name   = "money";
+	    drec->sql_desc_literal_prefix = NULL;
+	    drec->sql_desc_literal_suffix = NULL;
+	    SET_INFO2("decimal", "", "", 21);
+	    drec->default_c_type = SQL_C_DOUBLE;
+	    break;
+	
 	case SYBMONEY4:
-		drec->sql_desc_concise_type = SQL_DECIMAL;
-		drec->sql_desc_octet_length = 12;
-		drec->sql_desc_display_size = 12;
-		drec->sql_desc_precision = 10;
-		drec->sql_desc_scale     = 4;
-		drec->sql_desc_type_name   = "money";
-		drec->sql_desc_literal_prefix = NULL;
-	    	drec->sql_desc_literal_suffix = NULL;
-		/*SET_INFO2("money", "", "", 10);*/
-		SET_INFO2("decimal", "", "", 12);
+	    drec->sql_desc_concise_type = SQL_DECIMAL;
+	    drec->sql_desc_octet_length = 12;
+	    drec->sql_desc_display_size = 12;
+	    drec->sql_desc_precision   = 10;
+	    drec->sql_desc_scale       = 4;
+	    drec->sql_desc_type_name   = "money";
+	    drec->sql_desc_literal_prefix = NULL;
+	    drec->sql_desc_literal_suffix = NULL;
+	    SET_INFO2("decimal", "", "", 12);
+	    drec->default_c_type = SQL_C_DOUBLE;
+	    break;
 
 
 	case SYBDATETIME:
