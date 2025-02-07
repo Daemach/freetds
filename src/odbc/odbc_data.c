@@ -274,7 +274,10 @@ data_generic_set_type_info(TDSCOLUMN * col, struct _drecord *drec, SQLINTEGER od
 		drec->sql_desc_display_size = 21;
 		drec->sql_desc_precision = 19;
 		drec->sql_desc_scale     = 4;
-		SET_INFO2("money", "$", "", 19);
+		drec->sql_desc_type_name   = "money";
+		drec->sql_desc_literal_prefix = NULL;
+	    	drec->sql_desc_literal_suffix = NULL;
+		SET_INFO2("money", "", "", 19);
 
 	case SYBMONEY4:
 		drec->sql_desc_concise_type = SQL_DECIMAL;
@@ -282,7 +285,10 @@ data_generic_set_type_info(TDSCOLUMN * col, struct _drecord *drec, SQLINTEGER od
 		drec->sql_desc_display_size = 12;
 		drec->sql_desc_precision = 10;
 		drec->sql_desc_scale     = 4;
-		SET_INFO2("money", "$", "", 10);
+		drec->sql_desc_type_name   = "money";
+		drec->sql_desc_literal_prefix = NULL;
+	    	drec->sql_desc_literal_suffix = NULL;
+		SET_INFO2("money", "", "", 10);
 
 	case SYBDATETIME:
 		drec->sql_desc_concise_type = SQL_TYPE_TIMESTAMP;
