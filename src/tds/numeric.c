@@ -19,7 +19,7 @@
  */
 
 #include <config.h>
-
+#include <locale.h>
 #include <stdarg.h>
 #include <stdio.h>
 
