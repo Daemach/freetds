@@ -68,6 +68,8 @@ tds_money_to_string(const TDS_MONEY * money, char *s, bool use_2_digits)
 	TDS_UINT8 n;
 	char *p;
 
+	setlocale(LC_NUMERIC, "C");
+
 	/* sometimes money it's only 4-byte aligned so always compute 64-bit */
 	mymoney = (((TDS_INT8) money->tdsoldmoney.mnyhigh) << 32) | money->tdsoldmoney.mnylow;
 
